@@ -15,10 +15,16 @@ class WebRTCClient {
   WebRTCClient({ required this.client});
 
   Future<int> connect() async {
-    logger.d("Connect whep");
     final accessToken = await secureStorage.accessToken;
     final connectWhepEndpoint = WhepEndpoint.connectWhepSession(accessToken);
-    final headers = await connectWhepEndpoint.headers;
+    final headers = connectWhepEndpoint.headers;
+    logger.d('Header $headers');
+    final newHeaders = {
+      'Content-Type': 'application/sdp',
+      if (headers != null) ...headers!
+    };
+    logger.d('new header $newHeaders');
+    logger.d('WHEP ENPOINT URL: ${connectWhepEndpoint.uri.toString()}');
     whep = WHIP(url: connectWhepEndpoint.uri.toString(), headers: headers);
 
     whep.onState = (WhipState state) {
@@ -26,9 +32,7 @@ class WebRTCClient {
     };
 
     try {
-      logger.d("INIT 0");
       await whep.initlize(mode: WhipMode.kReceive);
-      logger.d("INIT");
       await whep.connect();
       whep.onTrack = (event) {
         logger.d(event);

@@ -36,7 +36,7 @@ class Endpoint {
       case EndpointPath.connectWhepEndpoint:
         headers = {
           'Content-Type': 'application/sdp',
-          'Accept': 'application/sdp',
+          'accept': 'application/sdp',
         };
       case EndpointPath.createWhipSession:
       case EndpointPath.createWhepSession:
@@ -49,7 +49,7 @@ class Endpoint {
         };
     }
     if (accessToken != null) {
-      headers['Authorization'] = accessToken!;
+      headers['Authorization'] = 'Bearer ${accessToken!}';
     }
     return headers;
   }

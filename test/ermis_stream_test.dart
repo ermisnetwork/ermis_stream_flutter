@@ -16,16 +16,6 @@ import 'package:ermis_stream/ermis_stream.dart';
 import 'package:http/http.dart';
 
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
 
-  ApiClient client = ApiClient();
-  var body = CreateWhipSessionRequestBody(
-      room: "room",
-      peer: "peer",
-      ttl: 7200,
-      record: false,
-      extraData: "extraData");
-  final BaseApiResponse<SessionTokenModel> abc = await client.request(TokenEndpoint.createWhepSession(body));
-  print('Token is ${abc.data?.token}');
 }
