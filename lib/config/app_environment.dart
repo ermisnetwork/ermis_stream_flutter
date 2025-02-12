@@ -16,7 +16,7 @@ extension AppEnviromentExtension on AppEnviroment {
   String get baseURL {
     switch (this) {
       case AppEnviroment.local:
-        return '192.168.31.116';
+        return '192.168.31.222';
       case AppEnviroment.dev:
         return 'media-dev.ermis.network';
       case AppEnviroment.product:

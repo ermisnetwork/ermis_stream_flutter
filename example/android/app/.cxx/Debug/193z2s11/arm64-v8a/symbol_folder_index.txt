@@ -1,0 +1,1 @@
+/Users/tuyenvx/Documents/ermis_stream/example/build/app/intermediates/cxx/Debug/193z2s11/obj/arm64-v8a

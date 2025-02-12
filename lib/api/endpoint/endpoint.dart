@@ -2,7 +2,6 @@ import 'package:ermis_stream/api/endpoint/endpoint_path.dart';
 import 'package:ermis_stream/api/http_method.dart';
 import 'package:ermis_stream/api/payload/create_whip_session_request_body.dart';
 import 'package:ermis_stream/config/app_environment.dart';
-import 'package:ermis_stream/utilities/secure_storage.dart';
 
 import '../../config/config.dart';
 
@@ -10,7 +9,7 @@ class Endpoint {
   HttpMethod httpMethod;
   EndpointPath endpointPath;
   Map<String, dynamic>? queries;
-  Map<String, dynamic>? body;
+  Object? body;
   String? accessToken;
 
   Endpoint(
@@ -24,24 +23,34 @@ class Endpoint {
     return Uri(
         scheme: Config.appEnviroment.urlScheme,
         host: Config.appEnviroment.baseURL,
-        port: 3000,
+        port: (Config.appEnviroment == AppEnviroment.local) ? 3000 : null,
         path: endpointPath.path,
         queryParameters: queries);
   }
 
   Map<String, String> get headers {
     Map<String, String> headers;
-    switch (endpointPath) {
-      case EndpointPath.connectWhipEndpoint:
-      case EndpointPath.connectWhepEndpoint:
+    switch (endpointPath.type) {
+      case EndpointPathType.connectWhipEndpoint:
+      case EndpointPathType.connectWhepEndpoint:
         headers = {
           'Content-Type': 'application/sdp',
-          'accept': 'application/sdp',
+          'Accept': 'application/sdp',
         };
-      case EndpointPath.createWhipSession:
-      case EndpointPath.createWhepSession:
-      case EndpointPath.webRTC:
-      case EndpointPath.rtpEngine:
+      case EndpointPathType.connection:
+        headers = {
+          'Content-Type': 'application/trickle-ice-sdpfrag',
+          'Accept': 'application/trickle-ice-sdpfrag'
+        };
+      case EndpointPathType.deleteConnection:
+        headers = {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Accept': 'text/plain; charset=utf-8'
+        };
+      case EndpointPathType.createWhipSession:
+      case EndpointPathType.createWhepSession:
+      case EndpointPathType.webRTC:
+      case EndpointPathType.rtpEngine:
         headers = {
           'Content-Type': 'application/json; charset=utf-8',
           'Accept': 'application/json; charset=utf-8',
@@ -86,10 +95,19 @@ extension TokenEndpoint on Endpoint {
 }
 
 extension WhepEndpoint on Endpoint {
-  static Endpoint connectWhepSession(String? accessToken) {
+  static Endpoint connectWhepSession(String? accessToken, String sdp) {
     return Endpoint(
         httpMethod: HttpMethod.post,
         endpointPath: EndpointPath.connectWhepEndpoint,
-        accessToken: accessToken);
+        accessToken: accessToken,
+        body: sdp);
+  }
+
+  static Endpoint sendIce(String path, String? candidate) {
+    return Endpoint(httpMethod: HttpMethod.patch, endpointPath: EndpointPath.connection(path), body: candidate);
+  }
+
+  static Endpoint deleteConnection(String path) {
+    return Endpoint(httpMethod: HttpMethod.delete, endpointPath: EndpointPath.deleteConnection(path));
   }
 }

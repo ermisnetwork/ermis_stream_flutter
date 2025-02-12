@@ -4,8 +4,8 @@ import 'package:ermis_stream/api/model/base_model.dart';
 import 'package:ermis_stream/api/model/session_token_model.dart';
 import 'package:ermis_stream/api/payload/create_whip_session_request_body.dart';
 import 'package:ermis_stream/utilities/logger.dart';
-import 'package:ermis_stream/utilities/secure_storage.dart';
-import 'package:ermis_stream/whep/webrtc_client.dart';
+import 'package:example/connect_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ConnectPage(),
     );
   }
 }
@@ -66,24 +66,22 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   Future<void> _incrementCounter() async {
-    logger.d('Tapped');
-    WidgetsFlutterBinding.ensureInitialized();
-
-    ApiClient client = ApiClient();
-    SecureStorage secureStorage = SecureStorage();
-    var body = CreateWhipSessionRequestBody(
-        room: "flutter_test_room",
-        peer: "Viewer 1",
-        ttl: 7200,
-        record: false,
-        extraData: "extraData");
-    final BaseApiResponse<SessionTokenModel> abc = await client.request(TokenEndpoint.createWhepSession(body));
-    print('Token is ${abc.data?.token}');
-    secureStorage.setAccessToken(abc.data?.token);
-    final webRTCClient = WebRTCClient(client: client);
-    final test = await webRTCClient.connect();
-    await Future.delayed(Duration(seconds: 6));
-    logger.d('DONE');
+    // logger.d('Tapped');
+    // WidgetsFlutterBinding.ensureInitialized();
+    //
+    // ApiClient client = ApiClient();
+    // var body = CreateWhipSessionRequestBody(
+    //     room: "flutter_test_room",
+    //     peer: "Viewer 1",
+    //     ttl: 7200,
+    //     record: true,
+    //     extraData: "string");
+    // final BaseApiResponse<SessionTokenModel> abc = await client.ermisRequest(TokenEndpoint.createWhepSession(body));
+    // print('Token is ${abc.data?.token}');
+    // final webRTCClient = WebRTCClient(client: client, token: abc.data!.token);
+    // final test = await webRTCClient.connect();
+    // await Future.delayed(Duration(seconds: 6));
+    // logger.d('DONE');
   }
 
   @override

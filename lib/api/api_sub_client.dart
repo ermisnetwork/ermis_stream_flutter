@@ -1,3 +1,4 @@
+/// Sub api client.
 enum ApiSubClient {
   whip, whep, token
 }

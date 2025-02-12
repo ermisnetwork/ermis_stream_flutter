@@ -1,4 +1,5 @@
-enum HttpMethod { get, post, put, delete }
+/// An enum represent Http request method.
+enum HttpMethod { get, post, put, patch, delete }
 
 extension HttpMethodExtension on HttpMethod {
   String get value {
@@ -9,6 +10,8 @@ extension HttpMethodExtension on HttpMethod {
         return 'POST';
       case HttpMethod.put:
         return 'PUT';
+      case HttpMethod.patch:
+        return 'PATCH';
       case HttpMethod.delete:
         return 'DELETE';
     }

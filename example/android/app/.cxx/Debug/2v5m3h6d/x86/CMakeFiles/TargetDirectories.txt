@@ -1,0 +1,2 @@
+/Users/tuyenvx/Documents/ermis_stream/example/android/app/.cxx/Debug/2v5m3h6d/x86/CMakeFiles/edit_cache.dir
+/Users/tuyenvx/Documents/ermis_stream/example/android/app/.cxx/Debug/2v5m3h6d/x86/CMakeFiles/rebuild_cache.dir
